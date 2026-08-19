@@ -7,7 +7,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173", "https://chat-app-frontend-ten-tawny.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   },
@@ -22,7 +22,7 @@ export const getReceiverSocketId = (userId) => {
 io.on("connection", (socket) => {
   const userId = socket.handshake.query.userId;
 
-  if (userId & (userId != undefined)) {
+  if (userId && (userId != undefined)) {
     userSocketMap[userId] = socket.id;
     console.log(`A user connected: socketId: ${socket.id}, userId: ${userId}`);
   }
@@ -55,19 +55,19 @@ io.on("connection", (socket) => {
     chat.participants.forEach((user) => {
       if (user._id === message.sender._id) return;
 
-      const receiverSocketId=getReceiverSocketId(user._id)
+      const receiverSocketId = getReceiverSocketId(user._id)
       if (receiverSocketId) {
-        socket.to(receiverSocketId).emit('message received notification',message)
+        socket.to(receiverSocketId).emit('message received notification', message)
       }
     });
   });
 
-  socket.on("disconnect",()=>{
+  socket.on("disconnect", () => {
     if (userId) {
-        delete userSocketMap[userId];
-        console.log(`User disconnected: socketId: ${socket.id}, userId: ${userId}`);
+      delete userSocketMap[userId];
+      console.log(`User disconnected: socketId: ${socket.id}, userId: ${userId}`);
     }
-    io.emit("getOnlineUsers",Object.keys(userSocketMap))
+    io.emit("getOnlineUsers", Object.keys(userSocketMap))
   })
 });
 
