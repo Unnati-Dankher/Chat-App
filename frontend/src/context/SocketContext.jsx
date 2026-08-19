@@ -25,7 +25,7 @@ export const SocketProvider = ({ children }) => {
         }
 
         // User logged in
-        const newSocket = io("http://localhost:5000", {
+        const newSocket = io(import.meta.env.VITE_SOCKET_URL, {
             query: {
                 userId: authUser._id,
             },
