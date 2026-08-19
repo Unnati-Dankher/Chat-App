@@ -30,7 +30,7 @@ connectDB();
 // CORS setup (note: Socket.IO cors is configured independently inside socket.js)
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://chat-app-frontend-ten-tawny.vercel.app'],
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://chat-app-frontend-unnati10.vercel.app'],
     credentials: true,
   })
 );
