@@ -92,32 +92,25 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
-   console.log("email:", email);
-
   try {
     if (!email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    console.log("1. Finding user");
     const user = await User.findOne({ email }).select("+password");
-     console.log("2. User found:", !!user);
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
-console.log("3. Comparing password");
+
     const isPasswordCorrect = await user.comparePassword(password);
-       console.log("4. Password comparison:", isPasswordCorrect);
+
     if (!isPasswordCorrect) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-     console.log("5. Generating access token");
     // Generate token
     const accessToken = generateAccessToken(user._id);
-     console.log("6. Access token generated");
     const refreshToken = generateRefreshToken(user._id);
-    console.log("7. Refresh token generated");
 
     return res.status(200).json({
       status: true,
