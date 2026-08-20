@@ -99,7 +99,7 @@ export const AuthProvider = ({ children }) => {
     const updateProfile = async (formData) => {
         setIsUpdatingProfile(true);
         try {
-            const res = await api.put('/auth/update-profile', formData);
+            const res = await api.put('/user/update-profile', formData);
             setAuthUser(res.data);
             return { success: true }
         } catch (error) {
